@@ -41,10 +41,10 @@ chmod +x /usr/local/bin/docker-compose
 ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 
 # Create project directory
-mkdir -p /opt/openproject
+mkdir -p ~/openproject
 
 # Create docker-compose.yml for OpenProject
-cat > /opt/openproject/docker-compose.yml << 'EOF'
+cat > ~/openproject/docker-compose.yml << 'EOF'
 version: '3'
 
 services:
@@ -80,7 +80,7 @@ volumes:
 EOF
 
 # Start OpenProject
-cd /opt/openproject
+cd ~/openproject
 docker-compose up -d
 
 echo "Docker and OpenProject installation completed on Ubuntu."

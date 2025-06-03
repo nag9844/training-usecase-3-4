@@ -41,7 +41,7 @@ chmod +x /usr/local/bin/docker-compose
 ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 
 # Create project directory
-mkdir -p /opt/devlake
+mkdir -p ~/devlake
 
 # Create docker-compose.yml for DevLake
 cat > ~/devlake/docker-compose.yml << 'EOF'
