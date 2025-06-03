@@ -53,10 +53,10 @@ The infrastructure consists of:
 You can customize the deployment by modifying the variables in `variables.tf` or by creating a `terraform.tfvars` file with your specific values:
 
 ```hcl
-aws_region          = "us-east-1"
+aws_region          = "ap-south-1"
 vpc_cidr_block      = "10.0.0.0/16"
 public_subnet_cidrs = ["10.0.1.0/24", "10.0.2.0/24"]
-availability_zones  = ["us-east-1a", "us-east-1b"]
+availability_zones  = ["ap-south-1a", "ap-south-1b"]
 instance_type       = "t3.large"
 key_name            = "your-key-pair-name"
 ```
