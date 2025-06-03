@@ -46,6 +46,14 @@ resource "aws_security_group" "instance_sg" {
   }
 
   ingress {
+    from_port       = 4000
+    to_port         = 4000
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb_sg.id]
+    description     = "Allow HTTP traffic from ALB"
+  }
+
+  ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
