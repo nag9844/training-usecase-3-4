@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "us-east-1"
+  region = "ap-south-1"
 }
  
 resource "aws_vpc" "main" {
@@ -205,13 +205,5 @@ resource "aws_lb_target_group_attachment" "tg_attach_devlake" {
   port             = 8080
 }
  
-variable "key_name" {
-  description = "Name of the SSH key pair"
-  type        = string
-}
- 
-variable "ami_id" {
-  description = "AMI ID for EC2 (Amazon Linux 2)"
-  type        = string
-}
+
  
