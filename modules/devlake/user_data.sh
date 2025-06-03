@@ -107,6 +107,7 @@ services:
       MYSQL_DATABASE: lake
       MYSQL_USER: merico
       MYSQL_PASSWORD: merico
+      ENCRYPTION_SECRET: "devlake-secret" 
     depends_on:
       - mysql
 
