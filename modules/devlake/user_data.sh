@@ -41,10 +41,10 @@ chmod +x /usr/local/bin/docker-compose
 ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 
 # Create project directory
-mkdir -p ~/devlake
+mkdir -p /home/ubuntu/devlake
 
 # Create docker-compose.yml for DevLake
-cat > ~/devlake/docker-compose.yml << 'EOF'
+cat > /home/ubuntu/devlake/docker-compose.yml << 'EOF'
 version: '3'
  
 services:
@@ -96,7 +96,7 @@ volumes:
 EOF
 
 # Start DevLake
-cd ~/devlake
+cd /home/ubuntu/devlake
 docker-compose up -d
 
 echo "Docker and DevLake installation completed on Ubuntu."

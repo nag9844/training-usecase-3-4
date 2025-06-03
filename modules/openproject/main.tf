@@ -13,8 +13,8 @@ resource "aws_instance" "openproject" {
     curl -fsSL https://get.docker.com -o install-docker.sh
     sudo sh install-docker.sh
     sudo usermod -aG docker ubuntu
-    mkdir -p ~/openproject
-    cd ~/openproject
+    mkdir -p /home/ubuntu/openproject
+    cd /home/ubuntu/openproject
     cat > docker-compose.yml << 'EOL'
     version: '3'
 

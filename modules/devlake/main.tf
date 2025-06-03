@@ -13,8 +13,8 @@ resource "aws_instance" "devlake" {
     curl -fsSL https://get.docker.com -o install-docker.sh
     sudo sh install-docker.sh
     sudo usermod -aG docker ubuntu
-    mkdir -p ~/devlake
-    cd ~/devlake
+    mkdir -p /home/ubuntu/devlake
+    cd /home/ubuntu/devlake
     cat > docker-compose.yml << 'EOL'
     version: '3'
     
