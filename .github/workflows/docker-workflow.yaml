@@ -81,7 +81,7 @@ jobs:
       
       - name: Generate Markdown with Terraform Docs
         if: github.event_name == 'push' || github.event_name == 'pull_request'
-        uses: terraform-docs/gh-actions@v1.3.0
+        uses: terraform-docs/gh-actions@v1.4.0
         with:
           output-file: README.md
           output-method: inject
