@@ -2,15 +2,41 @@
 set -e
 
 # Update system packages
-yum update -y
+apt-get update -y
+apt-get upgrade -y
+
+# Install prerequisites
+apt-get install -y \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release \
+    apt-transport-https \
+    software-properties-common
+
+# Add Docker’s official GPG key and set up the repository
+install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | \
+  gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+echo \
+  "deb [arch=$(dpkg --print-architecture) \
+  signed-by=/etc/apt/keyrings/docker.gpg] \
+  https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | \
+  tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 # Install Docker
-amazon-linux-extras install docker -y
+apt-get update -y
+apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# Enable Docker service and add ubuntu user to docker group
 systemctl enable docker
 systemctl start docker
+usermod -aG docker ubuntu
 
-# Install Docker Compose
-curl -L "https://github.com/docker/compose/releases/download/v2.20.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+# Install legacy Docker Compose CLI (optional but compatible with docker-compose.yml)
+curl -L "https://github.com/docker/compose/releases/download/v2.20.3/docker-compose-linux-x86_64" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 
@@ -94,4 +120,4 @@ EOF
 cd /opt/devlake
 docker-compose up -d
 
-echo "Docker installation and DevLake setup completed."
+echo "Docker and DevLake installation completed on Ubuntu."

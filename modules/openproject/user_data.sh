@@ -2,15 +2,41 @@
 set -e
 
 # Update system packages
-yum update -y
+apt-get update -y
+apt-get upgrade -y
 
-# Install Docker
-amazon-linux-extras install docker -y
+# Install prerequisites
+apt-get install -y \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release \
+    apt-transport-https \
+    software-properties-common
+
+# Add Docker's GPG key and repository
+install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | \
+  gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+echo \
+  "deb [arch=$(dpkg --print-architecture) \
+  signed-by=/etc/apt/keyrings/docker.gpg] \
+  https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | \
+  tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# Install Docker Engine
+apt-get update -y
+apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# Enable Docker and add ubuntu user to docker group
 systemctl enable docker
 systemctl start docker
+usermod -aG docker ubuntu
 
-# Install Docker Compose
-curl -L "https://github.com/docker/compose/releases/download/v2.20.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+# Install legacy Docker Compose CLI (optional)
+curl -L "https://github.com/docker/compose/releases/download/v2.20.3/docker-compose-linux-x86_64" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 
@@ -57,5 +83,4 @@ EOF
 cd /opt/openproject
 docker-compose up -d
 
-# Configure Nginx for proxy if we want to add it later
-echo "Docker installation and OpenProject setup completed."
+echo "Docker and OpenProject installation completed on Ubuntu."
