@@ -59,7 +59,7 @@ services:
       - postgres-data:/var/lib/postgresql/data
 
   openproject:
-    image: openproject/community:13.0
+    image: openproject/openproject:15.4.1
     restart: always
     depends_on:
       - db
