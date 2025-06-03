@@ -1,13 +1,6 @@
-# Variables for the VPC module
-
-variable "vpc_cidr" {
+variable "vpc_cidr_block" {
   description = "CIDR block for the VPC"
   type        = string
-}
-
-variable "availability_zones" {
-  description = "List of availability zones to use for the subnets"
-  type        = list(string)
 }
 
 variable "public_subnet_cidrs" {
@@ -15,8 +8,7 @@ variable "public_subnet_cidrs" {
   type        = list(string)
 }
 
-
-variable "project_tags" {
-  description = "Tags to apply to all resources"
-  type        = map(string)
+variable "availability_zones" {
+  description = "Availability zones for the subnets"
+  type        = list(string)
 }

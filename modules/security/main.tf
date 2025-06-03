@@ -1,9 +1,6 @@
-# Security Module - Creates security groups for the ALB and EC2 instances
-
-# Security Group for Application Load Balancer
-resource "aws_security_group" "web_sg" {
-  name        = "web-sg"
-  description = "Security group for the application load balancer"
+resource "aws_security_group" "alb_sg" {
+  name        = "alb-security-group"
+  description = "Security group for the Application Load Balancer"
   vpc_id      = var.vpc_id
 
   ingress {
@@ -11,7 +8,7 @@ resource "aws_security_group" "web_sg" {
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-    description = "Allow HTTP traffic from anywhere"
+    description = "Allow HTTP traffic from the internet"
   }
 
   ingress {
@@ -19,7 +16,7 @@ resource "aws_security_group" "web_sg" {
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-    description = "Allow HTTPS traffic from anywhere"
+    description = "Allow HTTPS traffic from the internet"
   }
 
   egress {
@@ -30,17 +27,13 @@ resource "aws_security_group" "web_sg" {
     description = "Allow all outbound traffic"
   }
 
-  tags = merge(
-    var.project_tags,
-    {
-      Name = "web-security-group"
-    }
-  )
+  tags = {
+    Name = "alb-sg"
+  }
 }
 
-# Security Group for EC2 Instances
-resource "aws_security_group" "ec2_sg" {
-  name        = "instances-sg"
+resource "aws_security_group" "instance_sg" {
+  name        = "instance-security-group"
   description = "Security group for EC2 instances"
   vpc_id      = var.vpc_id
 
@@ -48,8 +41,16 @@ resource "aws_security_group" "ec2_sg" {
     from_port       = 80
     to_port         = 80
     protocol        = "tcp"
-    security_groups = [aws_security_group.web_sg.id]
+    security_groups = [aws_security_group.alb_sg.id]
     description     = "Allow HTTP traffic from ALB"
+  }
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow SSH access from the internet"
   }
 
   egress {
@@ -60,10 +61,7 @@ resource "aws_security_group" "ec2_sg" {
     description = "Allow all outbound traffic"
   }
 
-  tags = merge(
-    var.project_tags,
-    {
-      Name = "ec2-security-group"
-    }
-  )
+  tags = {
+    Name = "instance-sg"
+  }
 }

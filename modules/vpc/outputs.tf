@@ -1,11 +1,9 @@
-# Outputs from the VPC module
-
 output "vpc_id" {
-  description = "ID of the VPC"
-  value       = aws_vpc.demo-vpc.id
+  description = "The ID of the VPC"
+  value       = aws_vpc.main.id
 }
 
 output "public_subnet_ids" {
-  description = "IDs of the public subnets"
+  description = "The IDs of the public subnets"
   value       = aws_subnet.public[*].id
 }

@@ -1,16 +1,14 @@
-# Outputs from the Load Balancer module
-
 output "alb_dns_name" {
-  description = "DNS name of the application load balancer"
+  description = "The DNS name of the ALB"
   value       = aws_lb.main.dns_name
 }
 
-output "alb_arn" {
-  description = "ARN of the application load balancer"
-  value       = aws_lb.main.arn
+output "openproject_target_group_arn" {
+  description = "The ARN of the OpenProject target group"
+  value       = aws_lb_target_group.openproject.arn
 }
 
-output "target_group_arns" {
-  description = "ARNs of the target groups"
-  value       = { for k, v in aws_lb_target_group.target_groups : k => v.arn }
+output "devlake_target_group_arn" {
+  description = "The ARN of the DevLake target group"
+  value       = aws_lb_target_group.devlake.arn
 }
