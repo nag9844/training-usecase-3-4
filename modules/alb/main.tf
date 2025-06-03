@@ -55,7 +55,7 @@ resource "aws_lb_target_group_attachment" "openproject" {
 resource "aws_lb_target_group_attachment" "devlake" {
   target_group_arn = aws_lb_target_group.devlake.arn
   target_id        = var.devlake_instance
-  port             = 4000
+  port             = 80
 }
 
 resource "aws_lb_listener" "http" {
