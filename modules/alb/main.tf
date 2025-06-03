@@ -26,7 +26,6 @@ resource "aws_lb_target_group" "openproject" {
     healthy_threshold   = 2
     unhealthy_threshold = 2
     timeout             = 5
-    matcher             = "200-499"
   }
 }
 
@@ -44,7 +43,6 @@ resource "aws_lb_target_group" "devlake" {
     healthy_threshold   = 2
     unhealthy_threshold = 2
     timeout             = 5
-    matcher             = "200-499"
   }
 }
 
@@ -57,7 +55,7 @@ resource "aws_lb_target_group_attachment" "openproject" {
 resource "aws_lb_target_group_attachment" "devlake" {
   target_group_arn = aws_lb_target_group.devlake.arn
   target_id        = var.devlake_instance
-  port             = 80
+  port             = 4000
 }
 
 resource "aws_lb_listener" "http" {
