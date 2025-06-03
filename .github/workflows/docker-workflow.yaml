@@ -37,6 +37,12 @@ jobs:
       - name: Run TFLint
         run: tflint --init && tflint -f compact
         working-directory: ./
+      
+      - name: Install Checkov
+        run: pip install checkov
+
+      - name: Run Checkov with soft fail
+        run: checkov --directory . --soft-fail
 
   terraform:
     name: Terraform ${{ github.event.inputs.action }}
@@ -72,20 +78,39 @@ jobs:
 
       - name: Validate Terraform
         run: terraform validate
+      
+      - name: Generate Markdown with Terraform Docs
+        if: github.event_name == 'push' || github.event_name == 'pull_request'
+        uses: terraform-docs/gh-actions@v1.3.0
+        with:
+          output-file: README.md
+          output-method: inject
+          git-push: true
+          config-file: .terraform-docs.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Terraform Plan
-        if: github.event.inputs.action == 'apply'
-        run: terraform plan -out=tfplan.binary
+      - name: Configure Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
-      - name: Show Terraform Plan Summary
-        if: github.event.inputs.action == 'apply'
-        run: terraform show -no-color tfplan.binary
+      - name: Posting README.md as PR Comment
+        if: github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2.9.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          header: "Terraform Documentation "
+          path: "README.md"
 
-      - name: Terraform Apply (from saved plan)
-        if: github.event.inputs.action == 'apply'
-        run: terraform apply -auto-approve tfplan.binary
+      - name: Applying Terraform after PR Merge
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          terraform init
+          terraform apply -auto-approve
 
-      - name: Terraform Destroy
-        if: github.event.inputs.action == 'destroy'
-        run: terraform destroy -auto-approve
- 
+      - name: Manually Destroy Infrastructure
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'destroy'
+        run: |
+          terraform init
+          terraform destroy -auto-approve
