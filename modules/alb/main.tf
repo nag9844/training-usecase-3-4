@@ -49,7 +49,7 @@ resource "aws_lb_target_group" "devlake" {
 resource "aws_lb_target_group_attachment" "openproject" {
   target_group_arn = aws_lb_target_group.openproject.arn
   target_id        = var.openproject_instance
-  port             = 80
+  port             = 8080
 }
 
 resource "aws_lb_target_group_attachment" "devlake" {
