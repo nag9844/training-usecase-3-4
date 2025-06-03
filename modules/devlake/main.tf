@@ -5,45 +5,45 @@ resource "aws_instance" "devlake" {
   vpc_security_group_ids = var.security_group_ids
   subnet_id              = var.public_subnet_ids[1]
 
-  #user_data = templatefile("${path.module}/user_data.sh", {})
+  user_data = templatefile("${path.module}/user_data.sh", {})
 
-  user_data = <<-EOF
-    #!/bin/bash
-    sudo apt update -y
-    curl -fsSL https://get.docker.com -o install-docker.sh
-    sudo sh install-docker.sh
-    sudo usermod -aG docker ubuntu
-    mkdir -p /home/ubuntu/devlake
-    cd /home/ubuntu/devlake
-    cat > docker-compose.yml << 'EOL'
-    version: '3'
+  # user_data = <<-EOF
+  #   #!/bin/bash
+  #   sudo apt update -y
+  #   curl -fsSL https://get.docker.com -o install-docker.sh
+  #   sudo sh install-docker.sh
+  #   sudo usermod -aG docker ubuntu
+  #   mkdir -p /home/ubuntu/devlake
+  #   cd /home/ubuntu/devlake
+  #   cat > docker-compose.yml << 'EOL'
+  #   version: '3'
     
-    services:
-      devlake:
-        image: devlake/devlake:latest
-        ports:
-          - "4000:4000"
-        environment:
-          - DEVLAKE_DB_HOST=mysql
-          - DEVLAKE_DB_PORT=3306
-          - DEVLAKE_DB_USER=root
-          - DEVLAKE_DB_PASSWORD=secret
-        depends_on:
-          - mysql
+  #   services:
+  #     devlake:
+  #       image: devlake/devlake:latest
+  #       ports:
+  #         - "4000:4000"
+  #       environment:
+  #         - DEVLAKE_DB_HOST=mysql
+  #         - DEVLAKE_DB_PORT=3306
+  #         - DEVLAKE_DB_USER=root
+  #         - DEVLAKE_DB_PASSWORD=secret
+  #       depends_on:
+  #         - mysql
     
-      mysql:
-        image: mysql:5.7
-        environment:
-          MYSQL_ROOT_PASSWORD: secret
-        volumes:
-          - db_data:/var/lib/mysql
+  #     mysql:
+  #       image: mysql:5.7
+  #       environment:
+  #         MYSQL_ROOT_PASSWORD: secret
+  #       volumes:
+  #         - db_data:/var/lib/mysql
     
-    volumes:
-      db_data:
-    EOL
+  #   volumes:
+  #     db_data:
+  #   EOL
 
-    docker-compose up -d
-  EOF
+  #   docker-compose up -d
+  # EOF
 
   tags = {
     Name = "devlake-instance"

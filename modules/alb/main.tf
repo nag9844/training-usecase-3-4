@@ -14,7 +14,7 @@ resource "aws_lb" "main" {
 
 resource "aws_lb_target_group" "openproject" {
   name     = "openproject-target-group"
-  port     = 8080
+  port     = 80
   protocol = "HTTP"
   vpc_id   = var.vpc_id
 
@@ -49,7 +49,7 @@ resource "aws_lb_target_group" "devlake" {
 resource "aws_lb_target_group_attachment" "openproject" {
   target_group_arn = aws_lb_target_group.openproject.arn
   target_id        = var.openproject_instance
-  port             = 8080
+  port             = 80
 }
 
 resource "aws_lb_target_group_attachment" "devlake" {
