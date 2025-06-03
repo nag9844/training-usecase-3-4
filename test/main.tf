@@ -60,7 +60,7 @@ resource "aws_security_group" "web_sg" {
 resource "aws_launch_template" "openproject" {
   name_prefix   = "openproject-"
   image_id      = var.ami_id
-  instance_type = "t2.micro"
+  instance_type = "t3.medium"
   key_name      = var.key_name
  
   user_data = filebase64("openproject.sh")
@@ -75,7 +75,7 @@ resource "aws_launch_template" "openproject" {
 resource "aws_launch_template" "devlake" {
   name_prefix   = "devlake-"
   image_id      = var.ami_id
-  instance_type = "t2.micro"
+  instance_type = "t3.medium"
   key_name      = var.key_name
  
   user_data = filebase64("datalake.sh")
@@ -89,7 +89,7 @@ resource "aws_launch_template" "devlake" {
  
 resource "aws_instance" "openproject" {
   ami                    = var.ami_id
-  instance_type          = "t2.micro"
+  instance_type          = "t3.medium"
   key_name               = var.key_name
   subnet_id              = aws_subnet.public[0].id
   vpc_security_group_ids = [aws_security_group.web_sg.id]
@@ -98,7 +98,7 @@ resource "aws_instance" "openproject" {
  
 resource "aws_instance" "devlake" {
   ami                    = var.ami_id
-  instance_type          = "t2.micro"
+  instance_type          = "t3.medium"
   key_name               = var.key_name
   subnet_id              = aws_subnet.public[1].id
   vpc_security_group_ids = [aws_security_group.web_sg.id]
