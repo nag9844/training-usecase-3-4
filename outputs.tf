@@ -18,17 +18,13 @@ output "devlake_instance_id" {
   value       = module.devlake.instance_id
 }
 
-output "alb_dns_name" {
-  description = "The DNS name of the Application Load Balancer"
-  value       = module.alb.alb_dns_name
-}
 
 output "openproject_url" {
   description = "URL to access OpenProject through ALB"
-  value       = "http://${module.alb.alb_dns_name}/openproject"
+  value       = "http://${module.alb.openproject_dns_name}"
 }
 
 output "devlake_url" {
   description = "URL to access DevLake through ALB"
-  value       = "http://${module.alb.alb_dns_name}/devlake"
+  value       = "http://${module.alb.devlake_dns_name}"
 }

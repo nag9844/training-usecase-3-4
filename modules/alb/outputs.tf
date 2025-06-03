@@ -1,6 +1,11 @@
-output "alb_dns_name" {
+output "devlake_dns_name" {
   description = "The DNS name of the ALB"
-  value       = aws_lb.main.dns_name
+  value       = aws_lb.devlake.dns_name
+}
+
+output "openproject_dns_name" {
+  description = "The DNS name of the ALB"
+  value       = aws_lb.openproject.dns_name
 }
 
 output "openproject_target_group_arn" {

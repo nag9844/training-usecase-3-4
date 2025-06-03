@@ -13,7 +13,8 @@ resource "aws_instance" "openproject" {
                 sudo apt-get install -y docker.io
                 sudo systemctl start docker
                 sudo systemctl enable docker
-                sudo docker run -d -p 80:80 -e OPENPROJECT_SECRET_KEY_BASE=secret -e OPENPROJECT_HTTPS=false openproject/openproject:15.4.1
+                usermod -aG docker ubuntu
+                docker run -d -p 80:80 -e OPENPROJECT_SECRET_KEY_BASE=secret -e OPENPROJECT_HTTPS=false openproject/openproject:15.4.1
                 EOF
 
   tags = {
