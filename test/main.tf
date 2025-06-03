@@ -133,60 +133,39 @@ resource "aws_lb_listener" "listener" {
   load_balancer_arn = aws_lb.alb.arn
   port              = 80
   protocol          = "HTTP"
- 
+
   default_action {
-    type = "fixed-response"
- 
-    fixed_response {
-      content_type = "text/plain"
-      message_body = "Invalid Path"
-      status_code  = "404"
-    }
-  }
-}
- 
-resource "aws_lb_listener_rule" "homepage" {
-  listener_arn = aws_lb_listener.listener.arn
-  priority     = 10
- 
-  condition {
-    path_pattern {
-      values = ["/"]
-    }
-  }
- 
-  action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.homepage.arn
+    target_group_arn = aws_lb_target_group.openproject.arn
   }
 }
- 
+
 resource "aws_lb_listener_rule" "openproject" {
   listener_arn = aws_lb_listener.listener.arn
   priority     = 20
- 
+
   condition {
     path_pattern {
       values = ["/openproject*"]
     }
   }
- 
+
   action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.openproject.arn
   }
 }
- 
+
 resource "aws_lb_listener_rule" "devlake" {
   listener_arn = aws_lb_listener.listener.arn
   priority     = 30
- 
+
   condition {
     path_pattern {
       values = ["/devlake*"]
     }
   }
- 
+
   action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.devlake.arn
