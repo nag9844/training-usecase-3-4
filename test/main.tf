@@ -63,7 +63,7 @@ resource "aws_launch_template" "openproject" {
   instance_type = "t2.micro"
   key_name      = var.key_name
  
-  user_data = filebase64("user_data_openproject.sh")
+  user_data = filebase64("openproject.sh")
  
   network_interfaces {
     associate_public_ip_address = true
@@ -78,7 +78,7 @@ resource "aws_launch_template" "devlake" {
   instance_type = "t2.micro"
   key_name      = var.key_name
  
-  user_data = filebase64("user_data_devlake.sh")
+  user_data = filebase64("datalake.sh")
  
   network_interfaces {
     associate_public_ip_address = true
@@ -93,7 +93,7 @@ resource "aws_instance" "openproject" {
   key_name               = var.key_name
   subnet_id              = aws_subnet.public[0].id
   vpc_security_group_ids = [aws_security_group.web_sg.id]
-  user_data              = file("user_data_openproject.sh")
+  user_data              = file("openproject.sh")
 }
  
 resource "aws_instance" "devlake" {
@@ -102,7 +102,7 @@ resource "aws_instance" "devlake" {
   key_name               = var.key_name
   subnet_id              = aws_subnet.public[1].id
   vpc_security_group_ids = [aws_security_group.web_sg.id]
-  user_data              = file("user_data_devlake.sh")
+  user_data              = file("datalake.sh")
 }
  
 resource "aws_lb" "alb" {
