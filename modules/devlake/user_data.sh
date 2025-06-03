@@ -45,7 +45,7 @@ mkdir -p ~/devlake
 
 # Create docker-compose.yml for DevLake
 cat > ~/devlake/docker-compose.yml << 'EOF'
-version: '3.9'
+version: '3'
  
 services:
   mysql:
